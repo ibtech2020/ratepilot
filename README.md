@@ -14,7 +14,7 @@ An advanced freelance rate and pricing planner built for useful organic search t
 - Focused day-rate, salary-conversion, and project-pricing calculators
 - Advertising-free embeddable calculator with attributed referral links
 - Long-form pricing guide, transparent methodology, privacy, and terms pages
-- Dynamic canonical-aware sitemap and robots files
+- Canonical-aware sitemap and robots files generated for the production host
 - Open Graph social card and structured data
 - Optional Google Analytics and AdSense hooks that remain inactive until real IDs are supplied
 
@@ -26,6 +26,20 @@ Requires Node.js 22.13 or newer.
 npm install
 npm run dev
 ```
+
+## Cloudflare Pages deployment
+
+RatePilot supports a fully static production export for Cloudflare Pages. Static assets do not invoke Pages Functions.
+
+Use these settings when connecting `ibtech2020/ratepilot` to Cloudflare Pages:
+
+- Production branch: `main`
+- Build command: `npm run build:pages`
+- Build output directory: `out`
+- Environment variable: `NEXT_PUBLIC_SITE_URL=https://ratepilot-ibtech2020.pages.dev`
+- Node.js version: `22.13.0` or newer
+
+Cloudflare's Git integration rebuilds and deploys the production site after every push to `main`. Pull request branches receive isolated preview deployments.
 
 ## Optional measurement and advertising
 

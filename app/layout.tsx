@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import Link from "next/link";
 import Script from "next/script";
 import "./globals.css";
 
 const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 const analyticsId = process.env.NEXT_PUBLIC_GA_ID;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ratepilot-ibtech2020.pages.dev";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host = requestHeaders.get("host") || "localhost:3000";
-  const protocol = host.includes("localhost") ? "http" : "https";
-  const metadataBase = new URL(`${protocol}://${host}`);
-
+export function generateMetadata(): Metadata {
   return {
-    metadataBase,
+    metadataBase: new URL(siteUrl),
     title: {
       default: "RatePilot — Freelance Rate Calculator & Pricing Planner",
       template: "%s | RatePilot",

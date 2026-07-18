@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 export function GET() {
   const publisher = process.env.ADSENSE_PUBLISHER_ID;
   const body = publisher ? `google.com, ${publisher}, DIRECT, f08c47fec0942fa0\n` : "# Advertising seller record will appear here after a verified publisher ID is configured.\n";
