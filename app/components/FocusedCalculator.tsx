@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Mode = "day" | "salary" | "project";
 
@@ -11,6 +11,8 @@ function NumberField({ label, value, suffix, onChange }: { label: string; value:
 }
 
 export default function FocusedCalculator({ mode }: { mode: Mode }) {
+  const mounted = useRef(false);
+  const tracked = useRef(false);
   const [hourly, setHourly] = useState(110);
   const [hoursPerDay, setHoursPerDay] = useState(8);
   const [bookingDiscount, setBookingDiscount] = useState(0);
@@ -40,6 +42,14 @@ export default function FocusedCalculator({ mode }: { mode: Mode }) {
     const scopeAdjusted = (labor + externalCosts) * (1 + reserve / 100);
     const quote = scopeAdjusted * (1 + valueAdjustment / 100);
     return { main: quote, unit: " fixed fee", metrics: [["Labor base", format(labor)], ["External costs", format(externalCosts)], ["Scope reserve", format(scopeAdjusted - labor - externalCosts)], ["Value / risk adjustment", format(quote - scopeAdjusted)]] };
+  }, [mode, hourly, hoursPerDay, bookingDiscount, salary, benefits, costs, tax, billableHours, projectHours, externalCosts, reserve, valueAdjustment]);
+
+  useEffect(() => {
+    if (!mounted.current) { mounted.current = true; return; }
+    if (!tracked.current) {
+      window.gtag?.("event", "focused_calculator_used", { tool: `${mode}_calculator` });
+      tracked.current = true;
+    }
   }, [mode, hourly, hoursPerDay, bookingDiscount, salary, benefits, costs, tax, billableHours, projectHours, externalCosts, reserve, valueAdjustment]);
 
   return <section className="mini-tool" aria-label={`${mode} calculator`}>

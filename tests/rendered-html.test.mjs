@@ -34,3 +34,30 @@ test("serves the standalone embed without ads", async () => {
   assert.match(html, /utm_source=embed/);
   assert.doesNotMatch(html, /adsbygoogle|googlesyndication/);
 });
+
+test("renders original guide and profession hubs", async () => {
+  for (const [path, phrase] of [["/guides", "Better pricing decisions"], ["/freelance-rates", "Price the work behind the deliverable"]]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    assert.match(await response.text(), new RegExp(phrase));
+  }
+});
+
+test("renders the static long-form content library", async () => {
+  for (const [path, phrase] of [["/guides/value-based-pricing", "Keep cost, market, and value"], ["/freelance-rates/web-developer", "Start with your delivery system"]]) {
+    const response = await render(path);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, new RegExp(phrase));
+    assert.match(html, /application\/ld\+json/);
+  }
+});
+
+test("publishes the expanded sitemap", async () => {
+  const response = await render("/sitemap.xml");
+  assert.equal(response.status, 200);
+  const xml = await response.text();
+  assert.match(xml, /freelance-rates\/web-developer/);
+  assert.match(xml, /guides\/raise-freelance-rates/);
+  assert.equal((xml.match(/<url>/g) || []).length, 25);
+});

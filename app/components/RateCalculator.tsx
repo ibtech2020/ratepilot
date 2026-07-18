@@ -64,11 +64,19 @@ export default function RateCalculator() {
   const [inputs, setInputs] = useState<Inputs>(defaults);
   const [message, setMessage] = useState("");
   const hydrated = useRef(false);
+  const started = useRef(false);
+  const resultTracked = useRef(false);
   const result = useMemo(() => calculate(inputs), [inputs]);
   const currency = currencies[inputs.currency] || currencies.USD;
   const money = (value: number, compact = false) => new Intl.NumberFormat(currency.locale, { style: "currency", currency: inputs.currency, maximumFractionDigits: 0, notation: compact ? "compact" : "standard" }).format(value);
   const percent = (part: number) => `${Math.max(2, (part / Math.max(1, result.targetRevenue)) * 100)}%`;
-  const update = <K extends keyof Inputs>(key: K, value: Inputs[K]) => setInputs((current) => ({ ...current, [key]: value }));
+  const update = <K extends keyof Inputs>(key: K, value: Inputs[K]) => {
+    if (!started.current && hydrated.current) {
+      started.current = true;
+      window.gtag?.("event", "calculator_started", { tool: "rate_planner" });
+    }
+    setInputs((current) => ({ ...current, [key]: value }));
+  };
   const track = (event: string) => window.gtag?.("event", event, { tool: "rate_planner" });
 
   useEffect(() => {
@@ -90,6 +98,12 @@ export default function RateCalculator() {
   useEffect(() => {
     if (!hydrated.current) return;
     window.localStorage.setItem("ratepilot-plan", JSON.stringify(inputs));
+    if (!started.current || resultTracked.current) return;
+    const timer = window.setTimeout(() => {
+      window.gtag?.("event", "rate_plan_generated", { tool: "rate_planner", currency: inputs.currency });
+      resultTracked.current = true;
+    }, 1200);
+    return () => window.clearTimeout(timer);
   }, [inputs]);
 
   const copyPlan = async () => {
@@ -143,7 +157,7 @@ export default function RateCalculator() {
             <Field label="Your current rate" hint="Used only for the opportunity-gap check" prefix={currency.symbol} value={inputs.currentRate} onChange={(value) => update("currentRate", value)} />
           </div>
         </details>
-        <button className="reset-button" type="button" onClick={() => setInputs(defaults)}>Reset example</button>
+        <button className="reset-button" type="button" onClick={() => { track("rate_plan_reset"); setInputs(defaults); }}>Reset example</button>
       </div>
 
       <div className="calculator-panel result-panel" aria-live="polite">

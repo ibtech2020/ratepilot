@@ -120,6 +120,22 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="playbook-section">
+        <div className="shell">
+          <div className="section-heading">
+            <div><span className="section-number">04</span><p className="eyebrow">ROLE-SPECIFIC PLAYBOOKS</p></div>
+            <div><h2>Different work creates different pricing risk.</h2><p>Go beyond generic averages with original playbooks for the scope, cost, capacity, and client decisions behind your profession.</p></div>
+          </div>
+          <div className="playbook-grid">
+            <Link href="/freelance-rates/web-developer"><span>DEVELOPMENT</span><h3>Web developer rates</h3><p>Price discovery, QA, deployment, integrations, and support.</p><b>Read playbook →</b></Link>
+            <Link href="/freelance-rates/graphic-designer"><span>DESIGN</span><h3>Graphic designer rates</h3><p>Account for concepts, revisions, production, and usage rights.</p><b>Read playbook →</b></Link>
+            <Link href="/freelance-rates/marketing-consultant"><span>MARKETING</span><h3>Marketing consultant rates</h3><p>Separate strategy, execution, access, tools, and media spend.</p><b>Read playbook →</b></Link>
+            <Link href="/freelance-rates/data-analyst"><span>DATA</span><h3>Data analyst rates</h3><p>Price discovery, data quality, validation, and decision support.</p><b>Read playbook →</b></Link>
+          </div>
+          <div className="hub-link-row"><Link className="button button--outline" href="/freelance-rates">Explore all 8 profession playbooks <span>→</span></Link><Link className="text-link" href="/guides">Browse the pricing field guides <span>→</span></Link></div>
+        </div>
+      </section>
+
       <section className="faq-section">
         <div className="shell faq-grid">
           <div><p className="eyebrow">COMMON QUESTIONS</p><h2>Before you send the quote.</h2><p>Use the number as a decision aid, then apply market context and professional judgment.</p></div>

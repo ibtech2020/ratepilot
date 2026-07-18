@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
+import AnalyticsConsent from "./components/AnalyticsConsent";
 import "./globals.css";
 
 const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
-const analyticsId = process.env.NEXT_PUBLIC_GA_ID;
+const analyticsId = process.env.NEXT_PUBLIC_GA_ID || "G-CYENNL7K9C";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nexypotai.com";
 
 export function generateMetadata(): Metadata {
@@ -23,13 +24,13 @@ export function generateMetadata(): Metadata {
       title: "RatePilot — Price freelance work with the full picture",
       description:
         "Turn your income goal, costs, taxes, and capacity into a rate you can defend.",
-      images: [{ url: "/og.png", width: 1200, height: 630, alt: "RatePilot freelance rate planner" }],
+      images: [{ url: "/og-v2.png", width: 1200, height: 630, alt: "RatePilot freelance rate planner" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "RatePilot — Freelance Rate Planner",
       description: "Find your floor, target, and rush rates with transparent math.",
-      images: ["/og.png"],
+      images: ["/og-v2.png"],
     },
     icons: { icon: "/favicon.png", shortcut: "/favicon.png" },
   };
@@ -51,7 +52,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <Link href="/day-rate-calculator">Day rate</Link>
               <Link href="/salary-to-freelance-rate">Salary converter</Link>
               <Link href="/project-pricing-calculator">Project pricing</Link>
-              <Link href="/guides/freelance-pricing">Pricing guide</Link>
+              <Link href="/freelance-rates">Rate playbooks</Link>
+              <Link href="/guides">Guides</Link>
             </nav>
             <Link className="nav-cta" href="/#calculator">Plan my rate</Link>
           </div>
@@ -69,10 +71,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <Link href="/day-rate-calculator">Day rate calculator</Link>
               <Link href="/salary-to-freelance-rate">Salary converter</Link>
               <Link href="/project-pricing-calculator">Project pricing</Link>
+              <Link href="/freelance-rates">Rate playbooks</Link>
             </div>
             <div>
               <strong>Learn</strong>
-              <Link href="/guides/freelance-pricing">Freelance pricing guide</Link>
+              <Link href="/guides">All pricing guides</Link>
+              <Link href="/guides/freelance-pricing">Complete pricing method</Link>
               <Link href="/about">About the methodology</Link>
               <Link href="/embed">Embed the calculator</Link>
               <Link href="/privacy">Privacy</Link>
@@ -92,17 +96,25 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
           />
         ) : null}
-        {analyticsId ? (
-          <>
-            <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
-            <Script id="ratepilot-analytics" strategy="afterInteractive">{`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments)}
-              gtag('js', new Date());
-              gtag('config', '${analyticsId}', { anonymize_ip: true });
-            `}</Script>
-          </>
-        ) : null}
+        <Script id="ratepilot-consent-default" strategy="beforeInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)}
+          var savedConsent = null;
+          try { savedConsent = window.localStorage.getItem('ratepilot-analytics-consent'); } catch (error) {}
+          gtag('consent', 'default', {
+            analytics_storage: savedConsent === 'granted' ? 'granted' : 'denied',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied',
+            wait_for_update: 500
+          });
+        `}</Script>
+        <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
+        <Script id="ratepilot-analytics" strategy="afterInteractive">{`
+          gtag('js', new Date());
+          gtag('config', '${analyticsId}', { anonymize_ip: true });
+        `}</Script>
+        <AnalyticsConsent />
       </body>
     </html>
   );
