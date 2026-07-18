@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import EmbedCode from "../components/EmbedCode";
+
+export const metadata: Metadata = { title: "Embed the Freelance Rate Calculator", description: "Add RatePilot's free, privacy-friendly freelance rate calculator to a blog, agency resource hub, or freelancer community.", alternates: { canonical: "/embed" } };
+
+export default function EmbedPage() {
+  return <main id="main"><section className="page-hero"><div className="shell"><p className="eyebrow">FREE EMBEDDABLE TOOL</p><h1>Give your audience useful pricing math.</h1><p>Add the focused RatePilot calculator to a freelancer blog, resource library, community, or professional-services site. The widget carries no advertising and sends no calculator inputs back to RatePilot.</p></div></section><article className="content-shell"><h2>Copy one line</h2><p>The responsive widget calculates in the visitor’s browser and includes a small attribution link to the full pricing planner.</p><EmbedCode /><h2>Publisher guidelines</h2><ul><li>Keep the RatePilot attribution visible and do not imply that calculator results are professional tax advice.</li><li>Do not place ads or deceptive download controls against the widget.</li><li>Give the iframe enough height to avoid nested scrolling; 620 pixels is the recommended minimum.</li><li>Introduce the tool with original context that helps your own audience use the result.</li></ul><div className="note-box"><strong>Why attribution matters</strong><p>It lets readers review the full methodology, privacy approach, and additional pricing tools behind the compact widget.</p></div></article></main>;
+}
