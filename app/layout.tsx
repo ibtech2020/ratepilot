@@ -5,7 +5,7 @@ import "./globals.css";
 
 const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 const analyticsId = process.env.NEXT_PUBLIC_GA_ID;
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ratepilot-ibtech2020.pages.dev";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nexypotai.com";
 
 export function generateMetadata(): Metadata {
   return {

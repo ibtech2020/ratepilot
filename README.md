@@ -36,7 +36,7 @@ Use these settings when connecting `ibtech2020/ratepilot` to Cloudflare Pages:
 - Production branch: `main`
 - Build command: `npm run build:pages`
 - Build output directory: `out`
-- Environment variable: `NEXT_PUBLIC_SITE_URL=https://ratepilot-ibtech2020.pages.dev`
+- Environment variable: `NEXT_PUBLIC_SITE_URL=https://nexypotai.com`
 - Node.js version: `22.13.0` or newer
 
 Cloudflare's Git integration rebuilds and deploys the production site after every push to `main`. Pull request branches receive isolated preview deployments.
